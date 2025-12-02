@@ -18,6 +18,7 @@ app.post("/signup", async (req, res) => {
     username,
     password,
   });
+  res.json({ msg: "user created" });
 });
 
 app.post("/signin", async (req, res) => {
@@ -72,4 +73,12 @@ app.post("/joingame/:gameId", userAuthMiddleware, async (req, res) => {
   res.json({ msg: "joined room" });
 });
 connect();
-app.listen(3040);
+const server = app.listen(3060, () => {
+  console.log("HTTP server running on port 3060");
+});
+
+// IMPORT YOUR WEBSOCKET SERVER
+const initWebSocket = require("./websocketServer");
+
+// START WEBSOCKET SERVER + ATTACH TO HTTP SERVER
+initWebSocket(server);
